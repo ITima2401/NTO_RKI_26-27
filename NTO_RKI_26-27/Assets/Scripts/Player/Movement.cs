@@ -55,7 +55,7 @@ public class Movement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Loot")) 
         {
-            PlayerStats.Money += 2;
+            PlayerStats.Money += 5;
             Destroy(other.gameObject);
         }
     }

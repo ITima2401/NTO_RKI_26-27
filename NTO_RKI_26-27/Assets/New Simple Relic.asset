@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73234353375940e4e89fc35ad19a968f, type: 3}
   m_Name: New Simple Relic
   m_EditorClassIdentifier: Assembly-CSharp::SimpleRelic
-  Cost: 0
-  sprite: {fileID: 21300000, guid: de68f0ace0034dd4ea63d2bd34077236, type: 3}
-  HP_value: 0
+  Cost: 5
+  sprite: {fileID: 21300000, guid: f78112dfa9361a24d9073aee8a5624e8, type: 3}
+  HP_value: 3
   HP_mod: 0
-  MaxHP_value: 0
+  MaxHP_value: 3
   MaxHP_mod: 0
-  Speed_value: 2
+  Speed_value: 0
   Speed_mod: 0
   Damage_value: 0
   Damage_mod: 0

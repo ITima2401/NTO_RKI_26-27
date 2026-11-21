@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1fe3f6b434894441a2fd8dbeec0f899, type: 3}
   m_Name: All Items
   m_EditorClassIdentifier: Assembly-CSharp::AllItems
-  Lvl1_BackGround: {fileID: 21300000, guid: 3ec3d7f4881f3e240bf8e195caf7e55e, type: 3}
+  Lvl1_BackGround: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   ItemsLvl1:
   - {fileID: 11400000, guid: 6e16e772f66c2d145899417d44d0490c, type: 2}
+  - {fileID: 11400000, guid: dfc97b6a683fd7f43bc88f002a7f7e3d, type: 2}
+  - {fileID: 11400000, guid: bebc1ec7380d8f942985aa8c0fa1adae, type: 2}
   Lvl2_BackGround: {fileID: 0}
   ItemsLvl2:
   - {fileID: 11400000, guid: 6e16e772f66c2d145899417d44d0490c, type: 2}

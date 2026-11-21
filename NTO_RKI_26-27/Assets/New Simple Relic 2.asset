@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73234353375940e4e89fc35ad19a968f, type: 3}
+  m_Name: New Simple Relic 2
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleRelic
+  Cost: 15
+  sprite: {fileID: 21300000, guid: de72ca319ce88604fa1409ff1c0e8cf3, type: 3}
+  HP_value: 0
+  HP_mod: 0
+  MaxHP_value: 0
+  MaxHP_mod: 0
+  Speed_value: 0
+  Speed_mod: 0
+  Damage_value: 2
+  Damage_mod: 0
