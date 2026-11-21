@@ -22,13 +22,11 @@ public class PlayerHP : MonoBehaviour
     private void HPChange(int hp)
     {
         HP = hp;
-        if(HP > MaxHP) PlayerStats.HP = MaxHP;
         if (HP <= 0) Death();
     }
     private void MaxHPChange(int hp)
     {
         MaxHP = hp;
-        if (HP > MaxHP) PlayerStats.HP = MaxHP;
         if (HP <= 0) Death();
     }
     private void Death()

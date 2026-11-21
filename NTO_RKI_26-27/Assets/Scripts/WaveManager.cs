@@ -10,7 +10,7 @@ public class WaveManager : MonoBehaviour
     public void WaveStarting()
     {
         Shop.SetActive(false);
-        WaveStart?.Invoke(waveDatas[WaveNumber % (waveDatas.Length - 1)]);
+        WaveStart?.Invoke(waveDatas[WaveNumber % (waveDatas.Length)]);
         WaveNumber++;
     }
     public void WaveEnding()

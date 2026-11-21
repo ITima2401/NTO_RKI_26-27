@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EasyEnemy
   Player: {fileID: 0}
+  Loot: {fileID: 4146144587859368764, guid: 83fee696a388c68488970cb38cc862d6, type: 3}
   HP: 0
   MaxHP: 0
   Speed: 0

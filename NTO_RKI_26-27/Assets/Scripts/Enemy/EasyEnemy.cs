@@ -21,7 +21,7 @@ public class EasyEnemy : Enemy
     }
     void Update()
     {
-        float Magnitude = (Player.position - transform.position).sqrMagnitude;
+        float Magnitude = (Player.position - transform.position).magnitude;
         if ( Magnitude > SlowRange)
         {
             Vector3 dir = (Player.position - transform.position).normalized;

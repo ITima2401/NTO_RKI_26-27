@@ -50,7 +50,7 @@ public class Spawner : MonoBehaviour
         GameObject _krest = Instantiate(Krest, PointOfSpawn, Quaternion.identity);
         yield return new WaitForSeconds(0.5f);
         Destroy(_krest);
-        Destroy( Instantiate(Enemy[UnityEngine.Random.Range(0,Enemy.Length-1)], PointOfSpawn, Quaternion.identity),WaveTime);
+        Destroy( Instantiate(Enemy[UnityEngine.Random.Range(0,Enemy.Length)], PointOfSpawn, Quaternion.identity),WaveTime);
         yield return null;
     }
     public void WaveStart(WaveData waveData)

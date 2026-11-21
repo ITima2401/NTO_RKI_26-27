@@ -4,6 +4,7 @@ public class Enemy : MonoBehaviour
 {
     protected Rigidbody rb;
     public Transform Player;
+    public GameObject Loot;
     public int HP;
     public int MaxHP;
     public float Speed;
@@ -15,10 +16,11 @@ public class Enemy : MonoBehaviour
     {
         HP += hp;
         if (HP > MaxHP ) HP = MaxHP;
-        if ( HP < 0 ) Death();
+        if ( HP <= 0 ) Death();
     }
     private void Death()
     {
+        Instantiate( Loot,transform.position,Quaternion.identity );
         Destroy( this.gameObject );
     }
 }

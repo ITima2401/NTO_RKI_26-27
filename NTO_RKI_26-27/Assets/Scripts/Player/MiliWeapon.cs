@@ -9,21 +9,16 @@ public class MiliWeapon : Weapon
     private List<GameObject> enemis = new List<GameObject>();
     private bool isRecharge;
     private bool isAttack;
-
-    private void Start()
-    {
-        target = Target;
-    }
-    private void Update()
+    protected override void Update()
     {
         if(target == null)
         {
             target = Target;
             isAttack = false;
             isRecharge = false;
-            Speed /= 3;
+            Speed = BaseSpeed;
         }
-        if (isChase && (target.position - transform.position).sqrMagnitude > 0.1f)
+        if (isChase && (target.position - transform.position).magnitude > 0.1f)
         {
             Vector3 dir = (target.position - transform.position).normalized;
             transform.Translate(dir * Speed * Time.deltaTime);
@@ -37,16 +32,16 @@ public class MiliWeapon : Weapon
             float minMagnitude = math.INFINITY;
             for (int i = 0; i < enemis.Count; i++)
             {
-                if((enemis[i].transform.position - transform.position).sqrMagnitude < minMagnitude)
+                if((enemis[i].transform.position - transform.position).magnitude < minMagnitude)
                 {
                     nearEnemy = enemis[i].transform;
-                    minMagnitude = (enemis[i].transform.position - transform.position).sqrMagnitude;
+                    minMagnitude = (enemis[i].transform.position - transform.position).magnitude;
                 }
             }
             if (nearEnemy == null|| nearEnemy == Target) return; 
             target = nearEnemy;
             isAttack = true;
-            Speed *= 3f;
+            Speed = BaseSpeed*3;
             StartCoroutine(Recharging());
         }
     }
@@ -74,10 +69,10 @@ public class MiliWeapon : Weapon
     {
         if(collision.gameObject.CompareTag("Enemy") && isAttack)
         {
-            collision.gameObject.GetComponent<Enemy>().ChangeHP(Convert.ToInt32(-Damage));
+            collision.gameObject.GetComponent<Enemy>().ChangeHP(Convert.ToInt32(-Damage * PlayerStats.Damage));
             isAttack = false;
             target = Target;
-            Speed /= 3f;
+            Speed = BaseSpeed;
         }
     }
 }

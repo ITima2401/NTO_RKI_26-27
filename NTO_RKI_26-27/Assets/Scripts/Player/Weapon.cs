@@ -5,6 +5,7 @@ public class Weapon : MonoBehaviour
     public Transform Target;
     protected Transform target;
     public float Speed;
+    public float BaseSpeed;
     public float Damage;
     public float Recharge;
     public bool isChase = true;
@@ -12,8 +13,9 @@ public class Weapon : MonoBehaviour
     private void Awake()
     {
         target = Target;
+        BaseSpeed = Speed;
     }
-    void Update()
+    protected virtual void Update()
     {
         if (isChase)
         {

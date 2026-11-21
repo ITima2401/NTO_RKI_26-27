@@ -3,13 +3,12 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
-    float Speed = 7;
+    public float Speed;
     Vector3 target;
     Rigidbody rb;
     private void Awake()
     {
         PlayerStats.Player = this.gameObject;
-        PlayerStats.Speed = Speed;
         rb = GetComponent<Rigidbody>();
         target = transform.position;
     }
@@ -30,12 +29,13 @@ public class Movement : MonoBehaviour
                 }
             }
         }
-        if((target - transform.position).sqrMagnitude > 0.1f)
+        if((target - transform.position).magnitude > 0.3f)
         {
             Vector3 dir = (target - transform.position).normalized;
             rb.linearVelocity = dir * Speed;
 
         }
+        else rb.linearVelocity = Vector3.zero;
     }
     private void OnEnable()
     {
@@ -43,11 +43,21 @@ public class Movement : MonoBehaviour
     }
     private void OnDisable()
     {
-        PlayerStats.OnSpeedChanged += SpeedChange;
+        PlayerStats.OnSpeedChanged -= SpeedChange;
     }
     private void SpeedChange(float speed)
     {
         Speed = speed;
+        Debug.Log(Speed);
+
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Loot")) 
+        {
+            PlayerStats.Money += 2;
+            Destroy(other.gameObject);
+        }
     }
 
 }
