@@ -3,14 +3,17 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
+    float Speed = 7;
     Vector3 target;
     Rigidbody rb;
-    private void Start()
+    private void Awake()
     {
+        PlayerStats.Player = this.gameObject;
+        PlayerStats.Speed = Speed;
         rb = GetComponent<Rigidbody>();
         target = transform.position;
-        PlayerStats.Speed = 5;
     }
+
     private void Update()
     {
         var mouse = Mouse.current;
@@ -18,7 +21,6 @@ public class Movement : MonoBehaviour
         {
             if (mouse.leftButton.isPressed)
             {
-                
                 int layerMask = 1 << 8;
                 Ray ray = Camera.main.ScreenPointToRay(mouse.position.ReadValue());
 
@@ -31,11 +33,21 @@ public class Movement : MonoBehaviour
         if((target - transform.position).sqrMagnitude > 0.1f)
         {
             Vector3 dir = (target - transform.position).normalized;
-            rb.linearVelocity = dir * PlayerStats.Speed;
-            //transform.Translate(dir * PlayerStats.Speed * Time.deltaTime);
+            rb.linearVelocity = dir * Speed;
 
         }
     }
-    
+    private void OnEnable()
+    {
+        PlayerStats.OnSpeedChanged += SpeedChange;
+    }
+    private void OnDisable()
+    {
+        PlayerStats.OnSpeedChanged += SpeedChange;
+    }
+    private void SpeedChange(float speed)
+    {
+        Speed = speed;
+    }
 
 }

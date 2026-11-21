@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class PlayerStats
 {
+    public static GameObject Player;
+    public static List<GameObject> Weapons = new List<GameObject>();
+
     public static event Action<float> OnSpeedChanged;
     private static float speed;
     public static float Speed {  
@@ -16,19 +20,18 @@ public static class PlayerStats
         get { return damage; }
         set { damage = value; OnDamageChanged?.Invoke(value); }
     }
-    public static event Action<float> OnHPChanged;
-    private static float hp;
-    public static float HP
+    public static event Action<int> OnHPChanged;
+    private static int hp;
+    public static int HP
     {
         get { return hp; }
         set { hp = value; OnHPChanged?.Invoke(value); }
     }
-    public static event Action<float> OnMaxHPChanged;
-    private static float maxHP;
-    public static float MaxHP
+    public static event Action<int> OnMaxHPChanged;
+    private static int maxHP;
+    public static int MaxHP
     {
         get { return maxHP; }
         set { maxHP = value; OnMaxHPChanged?.Invoke(value); }
     }
-
 }
