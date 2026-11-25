@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "DefaultStats", menuName = "Scriptable Objects/DefaultStats")]
 public class DefaultStats : ScriptableObject
 {
     public int HP;

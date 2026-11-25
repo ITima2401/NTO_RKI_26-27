@@ -5,7 +5,7 @@ using UnityEngine;
 public static class PlayerStats
 {
     public static GameObject Player;
-    public static List<GameObject> Weapons = new List<GameObject>();
+    public static List<WeaponInfo> Weapons = new List<WeaponInfo>();
     public static int Money;
     public static event Action OnItemsChanged;
     private static List<Item> items = new List<Item>();
@@ -31,6 +31,14 @@ public static class PlayerStats
     {
         get => damage;
         set { damage = value; OnDamageChanged?.Invoke(value); }
+    }
+
+    public static event Action<int> OnWaveNumChanged;
+    private static int waveNum;
+    public static int WaveNum
+    {
+        get => waveNum;
+        set { waveNum = value; OnWaveNumChanged?.Invoke(value); }
     }
     public static event Action<int> OnHPChanged;
     private static int hp;

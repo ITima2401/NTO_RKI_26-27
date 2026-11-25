@@ -4,11 +4,6 @@ public class PlayerHP : MonoBehaviour
 {
     public int HP;
     public int MaxHP;
-    private void Start()
-    {
-        PlayerStats.MaxHP = HP;
-        PlayerStats.HP = HP;
-    }
     private void OnEnable()
     {
         PlayerStats.OnHPChanged += HPChange;

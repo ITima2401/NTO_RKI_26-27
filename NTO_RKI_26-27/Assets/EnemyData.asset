@@ -15,5 +15,11 @@ MonoBehaviour:
   HP: 3
   Damage: 1
   Speed: 5
-  SlowRange: 75
   StopRange: 1
+  EnemyPref: {fileID: 3210408185894953756, guid: a306016e17a7991498edc2c36b290653, type: 3}
+  LootPref: {fileID: 4146144587859368764, guid: dfcebc413e9955d48aa0d7fa7c567e27, type: 3}
+  SlowRange: 75
+  AttackCD: 0
+  AttackRange: 0
+  BulletSpeed: 0
+  Bullet: {fileID: 0}

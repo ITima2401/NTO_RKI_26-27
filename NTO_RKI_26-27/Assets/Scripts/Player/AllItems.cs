@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "AllItems", menuName = "Scriptable Objects/Items/AllItems")]
 public class AllItems : ScriptableObject
 {
     public Sprite Lvl1_BackGround;

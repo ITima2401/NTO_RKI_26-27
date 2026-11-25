@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf908933ae95d14d98fecec4ce86154, type: 3}
+  m_Name: EnemyData 1
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  HP: 3
+  Damage: 1
+  Speed: 10
+  StopRange: 10
+  EnemyPref: {fileID: 44476747159661226, guid: 42c2a1b7d4a02534eae37c1d60901eb8, type: 3}
+  LootPref: {fileID: 4146144587859368764, guid: dfcebc413e9955d48aa0d7fa7c567e27, type: 3}
+  SlowRange: 0
+  AttackCD: 1
+  AttackRange: 2
+  BulletSpeed: 18
+  Bullet: {fileID: 2902682164308045485, guid: ae89fb1a07770494a9aaf0a4346398b7, type: 3}

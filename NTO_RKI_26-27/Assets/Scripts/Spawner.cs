@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
 using UnityEngine;
-
 public class Spawner : MonoBehaviour
 {
-    public GameObject[] Enemy;
+    public EnemyData[] Enemy;
     public float WaveTime;
     public int SpawnCount;
     public bool isWaveActive;
@@ -50,7 +49,10 @@ public class Spawner : MonoBehaviour
         GameObject _krest = Instantiate(Krest, PointOfSpawn, Quaternion.identity);
         yield return new WaitForSeconds(0.5f);
         Destroy(_krest);
-        Destroy( Instantiate(Enemy[UnityEngine.Random.Range(0,Enemy.Length)], PointOfSpawn, Quaternion.identity),WaveTime);
+        EnemyData data = Enemy[UnityEngine.Random.Range(0, Enemy.Length)];
+        Enemy _enemy = Instantiate(data.EnemyPref, PointOfSpawn, Quaternion.identity).GetComponent<Enemy>();
+        _enemy.DataUpdate(data);
+        Destroy(_enemy.gameObject,WaveTime);
         yield return null;
     }
     public void WaveStart(WaveData waveData)

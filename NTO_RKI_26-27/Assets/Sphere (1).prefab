@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 213505402645993729}
   - component: {fileID: 1457011504849641729}
   - component: {fileID: 5388678212395968833}
-  - component: {fileID: 8399473342953798522}
   - component: {fileID: 4566981376225773955}
   - component: {fileID: 4804274824220670666}
   - component: {fileID: 7926741091224900567}
@@ -94,27 +93,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &8399473342953798522
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1944317366086601707}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &4566981376225773955
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -134,7 +112,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 5
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4804274824220670666
 Rigidbody:
@@ -176,8 +154,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiliWeapon
   Target: {fileID: 0}
-  Speed: 10
+  Range: 0
+  Speed: 0
   BaseSpeed: 0
-  Damage: 1
-  Recharge: 4
-  isChase: 1
+  Damage: 0
+  Recharge: 0
+  isChase: 0

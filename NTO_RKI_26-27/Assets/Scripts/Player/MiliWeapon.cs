@@ -3,15 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(SphereCollider))]
 public class MiliWeapon : Weapon
 {
     private List<GameObject> enemis = new List<GameObject>();
+    private SphereCollider SphereCollider;
+    private float baseRange;
     private bool isRecharge;
-    private bool isAttack;
+    private void Start()
+    {
+        SphereCollider = GetComponent<SphereCollider>();
+        baseRange = SphereCollider.radius;
+        SphereCollider.radius = Range;
+        SphereCollider.isTrigger = true;
+    }
     protected override void Update()
     {
-        if(target == null)
+        if (target == null)
         {
             target = Target;
             isAttack = false;
@@ -32,16 +41,17 @@ public class MiliWeapon : Weapon
             float minMagnitude = math.INFINITY;
             for (int i = 0; i < enemis.Count; i++)
             {
-                if((enemis[i].transform.position - transform.position).magnitude < minMagnitude)
+                if ((enemis[i].transform.position - transform.position).magnitude < minMagnitude)
                 {
                     nearEnemy = enemis[i].transform;
                     minMagnitude = (enemis[i].transform.position - transform.position).magnitude;
                 }
             }
-            if (nearEnemy == null|| nearEnemy == Target) return; 
+            if (nearEnemy == null || nearEnemy == Target) return;
             target = nearEnemy;
             isAttack = true;
-            Speed = BaseSpeed*3;
+            Speed = BaseSpeed * 3;
+            SphereCollider.radius = baseRange;
             StartCoroutine(Recharging());
         }
     }
@@ -53,9 +63,30 @@ public class MiliWeapon : Weapon
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("Enemy") && isAttack)
+        {
+            other.gameObject.GetComponent<Enemy>().ChangeHP(Convert.ToInt32(-Damage * PlayerStats.Damage));
+            isAttack = false;
+            target = Target;
+            Speed = BaseSpeed;
+            SphereCollider.radius = Range;
+            return;
+        }
         if (other.gameObject.CompareTag("Enemy"))
         {
             enemis.Add(other.gameObject);
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy") && isAttack)
+        {
+            other.gameObject.GetComponent<Enemy>().ChangeHP(Convert.ToInt32(-Damage * PlayerStats.Damage));
+            isAttack = false;
+            target = Target;
+            Speed = BaseSpeed;
+            SphereCollider.radius = Range;
+            return;
         }
     }
     private void OnTriggerExit(Collider other)
@@ -63,16 +94,6 @@ public class MiliWeapon : Weapon
         if (other.gameObject.CompareTag("Enemy"))
         {
             enemis.Remove(other.gameObject);
-        }
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.CompareTag("Enemy") && isAttack)
-        {
-            collision.gameObject.GetComponent<Enemy>().ChangeHP(Convert.ToInt32(-Damage * PlayerStats.Damage));
-            isAttack = false;
-            target = Target;
-            Speed = BaseSpeed;
         }
     }
 }

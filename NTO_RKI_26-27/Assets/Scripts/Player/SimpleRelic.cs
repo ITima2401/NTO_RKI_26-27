@@ -1,11 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "SimpleRelic", menuName = "Scriptable Objects/Items/SimpleRelic")]
 public class SimpleRelic : Item
 {
 
     public int HP_value;
-    public float HP_mod;
     
     public int MaxHP_value;
     public float MaxHP_mod;
@@ -26,7 +25,6 @@ public class SimpleRelic : Item
         }
 
         Append("Здоровье", HP_value);
-        Append("Здоровье", HP_mod, "%");
         Append("Макс. здоровье", MaxHP_value);
         Append("Макс. здоровье", MaxHP_mod, "%");
         Append("Скорость", Speed_value);

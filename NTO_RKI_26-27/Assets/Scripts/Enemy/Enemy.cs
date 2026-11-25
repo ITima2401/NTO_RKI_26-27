@@ -1,5 +1,5 @@
 using UnityEngine;
-
+[RequireComponent(typeof(Rigidbody))]
 public class Enemy : MonoBehaviour
 {
     protected Rigidbody rb;
@@ -11,7 +11,21 @@ public class Enemy : MonoBehaviour
     public int Damage;
     public float SlowRange;
     public float StopRange;
-    public EnemyData EnemyData;
+    public float attackCD;
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        Player = PlayerStats.Player.transform;
+    }
+    public virtual void DataUpdate(EnemyData data)
+    {
+        HP = data.HP;
+        MaxHP = data.HP;
+        Speed = data.Speed;
+        Damage = data.Damage;
+        StopRange = data.StopRange;
+        Loot = data.LootPref;
+    }
     public void ChangeHP(int hp)
     {
         HP += hp;

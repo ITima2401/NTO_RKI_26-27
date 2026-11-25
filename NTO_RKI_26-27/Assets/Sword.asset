@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49937226f9d5be446b88fd69004968c5, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponInfo
+  Cost: 20
+  sprite: {fileID: 21300000, guid: b5c0b54d1a900be4fbe88e1c0b55c422, type: 3}
+  WeaponPrefab: {fileID: 1944317366086601707, guid: a8fdde6718d413d4fa6b93ced36f9e90, type: 3}
+  BaseSpeed: 10
+  Damage: 1
+  Recharge: 4
+  isChase: 1
+  Range: 5

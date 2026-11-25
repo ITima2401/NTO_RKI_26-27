@@ -3,22 +3,6 @@ using UnityEngine;
 public class EasyEnemy : Enemy
 {
     private float slow;
-    private float attackCD;
-    private void Awake()
-    {
-        HP = EnemyData.HP;
-        MaxHP = EnemyData.HP;
-        Speed = EnemyData.Speed;
-        Damage = EnemyData.Damage;
-        SlowRange = EnemyData.SlowRange;
-        StopRange = EnemyData.StopRange;
-
-        rb = GetComponent<Rigidbody>();
-    }
-    private void Start()
-    {
-        Player = PlayerStats.Player.transform;
-    }
     void Update()
     {
         float Magnitude = (Player.position - transform.position).magnitude;
@@ -37,6 +21,11 @@ public class EasyEnemy : Enemy
         {
             rb.linearVelocity = Vector3.zero;
         }
+    }
+    public override void DataUpdate(EnemyData data)
+    {
+        base.DataUpdate(data);
+        SlowRange = data.SlowRange;
     }
     private void OnCollisionEnter(Collision collision)
     {

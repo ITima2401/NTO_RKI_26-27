@@ -1,9 +1,9 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Wave")]
+[CreateAssetMenu(fileName = "Wave", menuName = "Scriptable Objects/Wave")]
 public class WaveData : ScriptableObject
 {
-    public GameObject[] Enemy;
+    public EnemyData[] Enemy;
     public float WaveTime;
     public int SpawnCount;
 }

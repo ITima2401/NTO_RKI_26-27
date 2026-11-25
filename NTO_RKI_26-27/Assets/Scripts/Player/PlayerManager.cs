@@ -5,13 +5,16 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] DefaultStats defaultStats;
+    float HpUpValue;
     private void Start()
     {
-        foreach(Item item in defaultStats.Items) PlayerStats.Items.Add(item);
+        PlayerStats.Items.Clear();
+        foreach (Item item in defaultStats.Items) PlayerStats.Items.Add(item);
         PlayerStats.MaxHP = defaultStats.HP;
         PlayerStats.HP = defaultStats.HP;
         PlayerStats.Damage = defaultStats.Damage;
         PlayerStats.Speed = defaultStats.Speed;
+        StatsUpdate();
     }
     public void StatsUpdate()
     {
@@ -19,14 +22,16 @@ public class PlayerManager : MonoBehaviour
         float finalDamage = defaultStats.Damage;
         int finalMaxHP = defaultStats.HP;
 
-        float finalHP = (PlayerStats.HP / PlayerStats.MaxHP) * defaultStats.HP;
+        float finalHP = PlayerStats.HP;
 
         if (PlayerStats.Items.Count > 0)
         {
-            float hp_mod = 0;
             float maxHp_mod = 0;
             float damage_mod = 0;
             float speed_mod = 0;
+
+            PlayerStats.Weapons.Clear();
+            foreach (var weapon in PlayerStats.Items.OfType<WeaponInfo>()) PlayerStats.Weapons.Add(weapon);
 
             foreach (var relic in PlayerStats.Items.OfType<SimpleRelic>())
             {
@@ -35,18 +40,16 @@ public class PlayerManager : MonoBehaviour
                 if (relic.MaxHP_value != 0) finalMaxHP += relic.MaxHP_value;
                 if (relic.Speed_value != 0) finalSpeed += relic.Speed_value;
 
-                if (relic.HP_mod != 0) hp_mod += relic.HP_mod;
                 if (relic.Damage_mod != 0) damage_mod += relic.Damage_mod;
                 if (relic.MaxHP_mod != 0) maxHp_mod += relic.MaxHP_mod;
                 if (relic.Speed_mod != 0) speed_mod += relic.Speed_mod;
             }
-
-            if (hp_mod != 0) finalHP += finalMaxHP * (1 + (hp_mod / 100));
-            if (damage_mod != 0) finalDamage *= 1 + (damage_mod / 100);
+            finalHP -= HpUpValue;
             if (maxHp_mod != 0) finalMaxHP = Convert.ToInt32(finalMaxHP * (1 + (maxHp_mod / 100)));
+            if (damage_mod != 0) finalDamage *= 1 + (damage_mod / 100);
             if (speed_mod != 0) finalSpeed *= 1 + (speed_mod / 100);
+            HpUpValue += finalHP -PlayerStats.HP;
         }
-
         PlayerStats.MaxHP = finalMaxHP;
         PlayerStats.HP = Convert.ToInt32(finalHP);
         PlayerStats.Damage = finalDamage;

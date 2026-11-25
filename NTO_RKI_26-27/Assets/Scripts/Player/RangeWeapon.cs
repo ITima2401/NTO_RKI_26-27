@@ -1,0 +1,79 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEngine;
+
+public class RangeWeapon : Weapon
+{
+    private List<GameObject> enemis = new List<GameObject>();
+    private SphereCollider SphereCollider;
+    public GameObject Bullet;
+    public float BulletRange;
+    public float BulletSpeed;
+    private bool isRecharge = true;
+    void Start()
+    {
+        SphereCollider = GetComponent<SphereCollider>();
+        SphereCollider.radius = Range;
+        SphereCollider.isTrigger = true;
+    }
+    private void OnEnable()
+    {
+        StartCoroutine(Attack());
+    }
+    private void OnDisable()
+    {
+        StopCoroutine(Attack());
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            enemis.Add(other.gameObject);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            enemis.Remove(other.gameObject);
+        }
+    }
+    public override void InstData(WeaponInfo weapon)
+    {
+        base.InstData(weapon);
+        Bullet = weapon.Bullet;
+        BulletRange = weapon.BulletRange;
+        BulletSpeed = weapon.BulletSpeed;
+    }
+    IEnumerator Attack()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+            if (isRecharge && enemis.Count != 0)
+            {
+                isRecharge = false;
+                Vector3 dir = Vector3.zero;
+                float minMagnitude = math.INFINITY;
+                for (int i = 0; i < enemis.Count; i++)
+                {
+                    if ((enemis[i].transform.position - transform.position).magnitude < minMagnitude)
+                    {
+                        dir = (enemis[i].transform.position - transform.position).normalized;
+                        minMagnitude = (enemis[i].transform.position - transform.position).magnitude;
+                    }
+                }
+
+                GameObject _bullet = Instantiate(Bullet, transform.position + dir, Quaternion.LookRotation(dir));
+                _bullet.GetComponent<Bullet>().Damage = (int)Damage;
+                _bullet.GetComponent<Bullet>().dir = dir * BulletSpeed;
+                _bullet.GetComponent<Bullet>()._tag = "Enemy";
+                Destroy(_bullet, BulletRange);
+
+                yield return new WaitForSeconds(Recharge);
+                isRecharge = true;
+            }
+        }
+    }
+}
