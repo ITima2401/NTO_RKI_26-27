@@ -5,8 +5,12 @@ using UnityEngine;
 public class DefaultStats : ScriptableObject
 {
     public int HP;
-    public float Speed;
+    public int Luck;
+    public int MiliDamage;
+    public int RangeDamage;
     public float Damage;
+    public float Regen;
+    public float Speed;
 
     public Item[] Items;
 }

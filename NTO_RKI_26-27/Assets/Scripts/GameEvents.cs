@@ -39,6 +39,18 @@ public readonly struct ItemsChangedEvent
     public readonly Item[] Item;
     public ItemsChangedEvent(Item[] item) { Item = item; }
 }
+// Событие: изменился ближний урон игрока.
+public readonly struct MiliDamageChangeEvent
+{
+    public readonly int MiliDamage;
+    public MiliDamageChangeEvent(int miliDamage) { MiliDamage = miliDamage; }
+}
+// Событие: изменился дальний урон игрока.
+public readonly struct RangeDamageChangeEvent
+{
+    public readonly int RangeDamage;
+    public RangeDamageChangeEvent(int damage) { RangeDamage = damage; }
+}
 
 // Событие: изменилась скорость игрока.
 public readonly struct SpeedChangedEvent
@@ -46,11 +58,23 @@ public readonly struct SpeedChangedEvent
     public readonly float Speed;
     public SpeedChangedEvent(float speed) { Speed = speed; }
 }
+// Событие: изменилась скорость регенерации игрока.
+public readonly struct RegenChangedEvent
+{
+    public readonly float Regen;
+    public RegenChangedEvent(float regen) { Regen = regen; }
+}
 // Событие: изменилось кол-во денег(кнопок).
 public readonly struct MoneyChangedEvent
 {
     public readonly int Money;
     public MoneyChangedEvent(int money) { Money = money; }
+}
+// Событие: добавилась удача.
+public readonly struct LuckChangedEvent
+{
+    public readonly int Luck;
+    public LuckChangedEvent(int luck) { Luck = luck; }
 }
 
 // Событие: изменился урон игрока. 
@@ -72,12 +96,31 @@ public readonly struct HPAddEvent
     public readonly int MaxHP;
     public HPAddEvent(int hp,int maxHP) { HP = hp; MaxHP = maxHP;}
 }
+// Событие: добавился ближний урон игрока.
+public readonly struct MiliDamageAddEvent
+{
+    public readonly int MiliDamage;
+    public MiliDamageAddEvent(int miliDamage) { MiliDamage = miliDamage; }
+}
+// Событие: добавился дальний урон игрока.
+public readonly struct RangeDamageAddEvent
+{
+    public readonly int RangeDamage;
+    public RangeDamageAddEvent(int damage) { RangeDamage = damage; }
+}
+
 
 // Событие: добавилась скорость игроку.
 public readonly struct SpeedAddEvent
 {
     public readonly float Speed;
     public SpeedAddEvent(float speed) { Speed = speed; }
+}
+// Событие: изменилась скорость регенерации игрока.
+public readonly struct RegenAddEvent
+{
+    public readonly float Regen;
+    public RegenAddEvent(float regen) { Regen = regen; }
 }
 
 // Событие: добавился урон игрока. 
@@ -91,4 +134,10 @@ public readonly struct MoneyAddEvent
 {
     public readonly int Money;
     public MoneyAddEvent(int money) { Money = money; }
+}
+// Событие: добавилась удача.
+public readonly struct LuckAddEvent
+{
+    public readonly int Luck;
+    public LuckAddEvent(int luck) { Luck = luck; }
 }

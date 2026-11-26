@@ -7,12 +7,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] DefaultStats defaultStats;
     private void Start()
     {
-        if(!defaultStats) { Debug.LogWarning("defaultStats = null");return; }
-        if(defaultStats.HP <= 0 || defaultStats.Damage <= 0 || defaultStats.Speed <= 0) 
+        if(defaultStats.HP <= 0 || defaultStats.MiliDamage <= 0 ||
+            defaultStats.Speed <= 0 || defaultStats.RangeDamage <= 0)
         { Debug.LogWarning("Uncorrect defaultStats"); return; }
 
+        ChangeLuck(new LuckAddEvent(defaultStats.Luck));
         ChangeHP(new HPAddEvent(defaultStats.HP, defaultStats.HP));
         ChangeDamage(new DamageAddEvent(defaultStats.Damage));
+        ChangeMiliDamage(new MiliDamageAddEvent(defaultStats.MiliDamage));
+        ChangeRangeDamage(new RangeDamageAddEvent(defaultStats.RangeDamage));
+        ChangeRegen(new RegenAddEvent(defaultStats.Regen));
         ChangeSpeed(new SpeedAddEvent(defaultStats.Speed));
 
         GameStats.Items.Clear();
@@ -26,8 +30,12 @@ public class GameManager : MonoBehaviour
         bus.Subscribe<WaveStartedEvent>(ChangeWave);
         bus.Subscribe<HPAddEvent>(ChangeHP);
         bus.Subscribe<DamageAddEvent>(ChangeDamage);
+        bus.Subscribe<MiliDamageAddEvent>(ChangeMiliDamage);
+        bus.Subscribe<RangeDamageAddEvent>(ChangeRangeDamage);
         bus.Subscribe<SpeedAddEvent>(ChangeSpeed);
+        bus.Subscribe<RegenAddEvent>(ChangeRegen);
         bus.Subscribe<MoneyAddEvent>(ChangeMoney);
+        bus.Subscribe<LuckAddEvent>(ChangeLuck);
         bus.Subscribe<ItemAddEvent>(ChangeItems);
         bus.Subscribe<PlayerObjUpdate>(ChangePlayerObj);
 
@@ -39,35 +47,55 @@ public class GameManager : MonoBehaviour
         bus.Unsubscribe<WaveStartedEvent>(ChangeWave);
         bus.Unsubscribe<HPAddEvent>(ChangeHP);
         bus.Unsubscribe<DamageAddEvent>(ChangeDamage);
+        bus.Unsubscribe<MiliDamageAddEvent>(ChangeMiliDamage);
+        bus.Unsubscribe<RangeDamageAddEvent>(ChangeRangeDamage);
         bus.Unsubscribe<SpeedAddEvent>(ChangeSpeed);
+        bus.Unsubscribe<RegenAddEvent>(ChangeRegen);
         bus.Unsubscribe<MoneyAddEvent>(ChangeMoney);
+        bus.Unsubscribe<LuckAddEvent>(ChangeLuck);
         bus.Unsubscribe<ItemAddEvent>(ChangeItems);
         bus.Unsubscribe<PlayerObjUpdate>(ChangePlayerObj);
 
     }
     public void StatsUpdate(Item item)
     {
-        float finalSpeed = 0;
-        float finalDamage = 0;
-        int finalMaxHP = 0;
-        int finalHP = 0;
 
         if(item is WeaponInfo weapon) GameStats.Weapons.Add(weapon);
         else if (item is SimpleRelic relic)
         {
-            if (relic.HP_value != 0) finalHP += relic.HP_value;
-            if (relic.Damage_value != 0) finalDamage += relic.Damage_value;
-            if (relic.MaxHP_value != 0) finalMaxHP += relic.MaxHP_value;
-            if (relic.Speed_value != 0) finalSpeed += relic.Speed_value;
 
-            if (relic.Damage_mod != 0) finalDamage += (GameStats.Damage + finalDamage) * (relic.Damage_mod / 100);
-            if (relic.Speed_mod != 0) finalSpeed += (GameStats.Speed + finalSpeed) * (relic.Speed_mod / 100);
+            if (relic.HP != 0 || relic.MaxHP != 0) 
+                ChangeHP(new HPAddEvent(relic.HP, relic.MaxHP));
+            if (relic.Luck != 0) ChangeLuck(new LuckAddEvent(relic.Luck));
+            if (relic.MiliDamage != 0) ChangeMiliDamage(new MiliDamageAddEvent(relic.MiliDamage));
+            if (relic.RangeDamage != 0) ChangeRangeDamage(new RangeDamageAddEvent(relic.RangeDamage));
+            if (relic.Damage_mod != 0) ChangeDamage(new DamageAddEvent(relic.Damage_mod));
+            if (relic.Regen != 0) ChangeRegen(new RegenAddEvent(relic.Regen));
+            if (relic.Speed != 0) ChangeSpeed(new SpeedAddEvent(relic.Speed));
         }
-        
-        if(finalHP != 0 || finalMaxHP != 0) ChangeHP(new HPAddEvent(finalHP, finalMaxHP));
-        if (finalDamage != 0) ChangeDamage(new DamageAddEvent(finalDamage));
-        if (finalSpeed != 0) ChangeSpeed(new SpeedAddEvent(finalSpeed));
     }
+
+    private void ChangeRangeDamage(RangeDamageAddEvent rangeDamage)
+    {
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) { Debug.LogError(" GameBootstrap = null"); return; }
+
+        GameStats.RangeDamage += rangeDamage.RangeDamage;
+
+        bus.Publish(new RangeDamageChangeEvent(GameStats.RangeDamage));
+    }
+
+    private void ChangeMiliDamage(MiliDamageAddEvent miliDamage)
+    {
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) { Debug.LogError(" GameBootstrap = null"); return; }
+        
+        GameStats.MiliDamage += miliDamage.MiliDamage;
+
+        bus.Publish(new MiliDamageChangeEvent(GameStats.MiliDamage));
+
+    }
+
     private void ChangeHP(HPAddEvent _hp)
     {
         var bus = GameBootstrap.Instance?.Bus;
@@ -96,6 +124,15 @@ public class GameManager : MonoBehaviour
 
         bus.Publish(new SpeedChangedEvent(GameStats.Speed));
     }
+    private void ChangeRegen(RegenAddEvent regen)
+    {
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) { Debug.LogError(" GameBootstrap = null"); return; }
+
+        GameStats.Regen += regen.Regen;
+
+        bus.Publish(new RegenChangedEvent(GameStats.Regen));
+    }
     private void ChangeWave(WaveStartedEvent wave)
     {
         GameStats.WaveNum = wave.Number;
@@ -108,6 +145,14 @@ public class GameManager : MonoBehaviour
 
         GameStats.Money += money.Money;
         bus.Publish(new MoneyChangedEvent(GameStats.Money));
+    }
+    private void ChangeLuck(LuckAddEvent luck)
+    {
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) { Debug.LogError(" GameBootstrap = null"); return; }
+        
+        GameStats.Luck += luck.Luck;
+        bus.Publish(new LuckChangedEvent(GameStats.Luck));
     }
     private void ChangePlayerObj(PlayerObjUpdate player)
     { 

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,7 @@ public class Shop : MonoBehaviour
     public Image[] Panels;
     public Image[] Sprite;
     public Item[] Items = new Item[3];
-
+    private int waveNum;
     private void OnEnable()
     {
         var bus = GameBootstrap.Instance?.Bus;
@@ -28,7 +29,7 @@ public class Shop : MonoBehaviour
         bus.Unsubscribe<WaveStartedEvent>(OnWaveStarted);
     }
 
-    private void OnWaveEnded(WaveEndedEvent _) => Refresh();
+    private void OnWaveEnded(WaveEndedEvent _) { waveNum = _.Number;  Refresh();}
     private void OnWaveStarted(WaveStartedEvent _) => Menu.SetActive(false);
 
     public void Buy(int buttonID)
@@ -47,23 +48,52 @@ public class Shop : MonoBehaviour
 
     public void Refresh()
     {
-        if (AllItems == null) return;
-        if (AllItems.ItemsLvl1 == null || AllItems.ItemsLvl1.Length == 0)
-        {
-            Debug.LogWarning($"{nameof(Shop)}: ItemsLvl1 ÔÛÒÚ.");
-            return;
-        }// œ≈–≈ƒ≈À¿“‹
 
         Menu.SetActive(true);
-
+        if (AllItems == null) return;
+        foreach (var item in AllItems.pools)
+        {
+            if (item.Items == null || item.Items.Length == 0)
+            {
+                Debug.LogWarning("pool is empty");
+                return;
+            }
+        }
+        AllItems.PoolsSort();
+        float[] Chances = new float[AllItems.pools.Length];
+        for (int i = 0; i < AllItems.pools.Length; i++)
+        {
+            if(waveNum < AllItems.pools[i].MinWave) { Chances[i] = 0;continue; }
+            Chances[i] = Mathf.Min((AllItems.pools[i].BaseChance 
+                + AllItems.pools[i].GrowPerWave * (waveNum - AllItems.pools[i].MinWave))
+                * (1 + Mathf.Max(GameStats.Luck, -99) / 100f), AllItems.pools[i].MaxChance);
+            
+        }
         for (int i = 0; i < Items.Length; i++)
         {
             Panels[i].gameObject.SetActive(true);
-            Items[i] = AllItems.ItemsLvl1[Random.Range(0, AllItems.ItemsLvl1.Length)];
-            Infs[i].text = Items[i].Info();
-            Prise[i].text = $"{Items[i].Cost}";
-            Panels[i].sprite = AllItems.Lvl1_BackGround;
-            Sprite[i].sprite = Items[i].sprite;
+            float D100 = UnityEngine.Random.Range(0f, 100f);
+            for (int j = 0 ; j < AllItems.pools.Length; j++)
+            {
+                if (D100 <= Chances[j])
+                {
+                    Items[i] = AllItems.pools[j].Items[UnityEngine.Random.Range(0, AllItems.pools[j].Items.Length)];
+                    Infs[i].text = Items[i].Info();
+                    Prise[i].text = $"{Items[i].Cost}";
+                    Sprite[i].sprite = Items[i].sprite;
+                    Panels[i].sprite = AllItems.pools[j].BackGround;
+                    break;
+                }
+                if (j == AllItems.pools.Length-1)
+                {
+                    Items[i] = AllItems.pools[j].Items[UnityEngine.Random.Range(0, AllItems.pools[j].Items.Length)];
+                    Infs[i].text = Items[i].Info();
+                    Prise[i].text = $"{Items[i].Cost}";
+                    Sprite[i].sprite = Items[i].sprite;
+                    Panels[i].sprite = AllItems.pools[j].BackGround;
+                    break;
+                }
+            }
         }
     }
 }

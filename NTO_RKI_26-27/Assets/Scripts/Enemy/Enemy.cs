@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour, IDamage
     }
     public void TakeDamage(int damage)
     {
+        Debug.Log(-damage);
         ChangeHP(-damage);
     }
     public void ChangeHP(int hp)

@@ -369,7 +369,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 103331678}
-  - component: {fileID: 103331677}
   - component: {fileID: 103331679}
   m_Layer: 0
   m_Name: PlayerManager
@@ -378,19 +377,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &103331677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103331676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff5725769ca44a4408cb3bb79128b44d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
-  defaultStats: {fileID: 11400000, guid: 3932ccc07dba76240899fd4d2ffb10bb, type: 2}
 --- !u!4 &103331678
 Transform:
   m_ObjectHideFlags: 0
@@ -648,6 +634,7 @@ GameObject:
   - component: {fileID: 282411095}
   - component: {fileID: 282411096}
   - component: {fileID: 282411097}
+  - component: {fileID: 282411098}
   m_Layer: 8
   m_Name: Plane
   m_TagString: Spawner
@@ -743,7 +730,7 @@ Transform:
   m_GameObject: {fileID: 282411090}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: -2, z: -0}
   m_LocalScale: {x: 5.593952, y: 5.67, z: 2.7646353}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -817,6 +804,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &282411098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282411090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff5725769ca44a4408cb3bb79128b44d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
+  defaultStats: {fileID: 11400000, guid: 3932ccc07dba76240899fd4d2ffb10bb, type: 2}
 --- !u!1 &297834865
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,13 +1040,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 25.71, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0

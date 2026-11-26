@@ -63,25 +63,26 @@ public class MiliWeapon : Weapon
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy") && isAttack && other.TryGetComponent<IDamage>(out var enemy))
-        {
-            enemy.TakeDamage(Convert.ToInt32(-Damage * GameStats.Damage));
-            isAttack = false;
-            target = Target;
-            Speed = BaseSpeed;
-            SphereCollider.radius = Range;
-            return;
-        }
         if (other.gameObject.CompareTag("Enemy"))
         {
             enemis.Add(other.gameObject);
+            if (isAttack && other.TryGetComponent<IDamage>(out var enemy))
+            {
+                enemy.TakeDamage(Convert.ToInt32(GameStats.MiliDamage * Damage * GameStats.Damage));
+                isAttack = false;
+                target = Target;
+                Speed = BaseSpeed;
+                SphereCollider.radius = Range;
+                return;
+            }
         }
+        
     }
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Enemy") && isAttack && other.TryGetComponent<IDamage>(out var enemy))
         {
-            enemy.TakeDamage(Convert.ToInt32(Damage * GameStats.Damage));
+            enemy.TakeDamage(Convert.ToInt32(GameStats.MiliDamage * Damage * GameStats.Damage));
             isAttack = false;
             target = Target;
             Speed = BaseSpeed;

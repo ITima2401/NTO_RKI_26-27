@@ -11,7 +11,7 @@ public class RangeWeapon : Weapon
     public GameObject Bullet;
     public float BulletRange;
     public float BulletSpeed;
-    private bool isRecharge = true;
+    private bool isRecharge;
     void Start()
     {
         SphereCollider = GetComponent<SphereCollider>();
@@ -21,6 +21,7 @@ public class RangeWeapon : Weapon
     private void OnEnable()
     {
         StartCoroutine(Attack());
+        isRecharge = true;
     }
     private void OnDisable()
     {
@@ -70,7 +71,8 @@ public class RangeWeapon : Weapon
                 }
 
                 GameObject _bullet = Instantiate(Bullet, transform.position + dir, Quaternion.LookRotation(dir));
-                _bullet.GetComponent<Bullet>().Damage = Convert.ToInt32(Damage * GameStats.Damage);
+                _bullet.GetComponent<Bullet>().Damage = 
+                    Convert.ToInt32(GameStats.RangeDamage * Damage * GameStats.Damage);
                 _bullet.GetComponent<Bullet>().dir = dir * BulletSpeed;
                 _bullet.GetComponent<Bullet>()._tag = "Enemy";
                 Destroy(_bullet, BulletRange);

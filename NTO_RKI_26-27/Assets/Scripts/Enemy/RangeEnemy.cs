@@ -22,7 +22,7 @@ public class RangeEnemy : Enemy
         }
         else
         {
-            StartCoroutine(Attack(dir));
+            if(isRecharge)StartCoroutine(Attack(dir));
             rb.linearVelocity = Vector3.zero;
         }
     }
@@ -37,17 +37,14 @@ public class RangeEnemy : Enemy
     }
     IEnumerator Attack(Vector3 dir)
     {
-        if (isRecharge)
-        {
-            isRecharge = false;
-            GameObject _bullet = Instantiate(bullet, transform.position + dir , Quaternion.LookRotation(dir));
-            _bullet.GetComponent<Bullet>().Damage = Damage;
-            _bullet.GetComponent<Bullet>().dir = dir * BulletSpeed;
-            _bullet.GetComponent<Bullet>()._tag = "Player";
-            Destroy(_bullet, AttackRange);
-            yield return new WaitForSeconds(attackCD);
-            isRecharge = true;
-        }
+        isRecharge = false;
+        GameObject _bullet = Instantiate(bullet, transform.position + dir , Quaternion.LookRotation(dir));
+        _bullet.GetComponent<Bullet>().Damage = Damage;
+        _bullet.GetComponent<Bullet>().dir = dir * BulletSpeed;
+        _bullet.GetComponent<Bullet>()._tag = "Player";
+        Destroy(_bullet, AttackRange);
+        yield return new WaitForSeconds(attackCD);
+        isRecharge = true;
     }
 
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class EasyEnemy : Enemy
 {
     private float slow;
@@ -29,20 +28,21 @@ public class EasyEnemy : Enemy
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && collision.gameObject.TryGetComponent<IDamage>(out var target))
         {
-            GameStats.HP -= Damage;
+            target.TakeDamage(Damage);
         }
         
     }
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && collision.gameObject.TryGetComponent<IDamage>(out var target))
         {
+            
             attackCD += Time.fixedDeltaTime;
             if (attackCD > 0.4f) 
-            { 
-                GameStats.HP -= Damage;
+            {   
+                target.TakeDamage(Damage);
                 attackCD = 0f;
             }
         }

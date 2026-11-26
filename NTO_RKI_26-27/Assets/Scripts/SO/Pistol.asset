@@ -15,7 +15,7 @@ MonoBehaviour:
   Cost: 5
   sprite: {fileID: 21300000, guid: 7348e17cc6410c349919669957afe0de, type: 3}
   WeaponPrefab: {fileID: 1944317366086601707, guid: 765c78cc746e9074eb63a78792865e5f, type: 3}
-  Damage: 3
+  Damage: 1.5
   Recharge: 2
   isChase: 1
   Range: 10

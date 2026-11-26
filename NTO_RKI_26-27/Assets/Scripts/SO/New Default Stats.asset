@@ -15,6 +15,9 @@ MonoBehaviour:
   HP: 5
   Speed: 7
   Damage: 1
+  MiliDamage: 1
+  RangeDamage: 2
+  Regen: 1
   Items:
   - {fileID: 11400000, guid: b89eacbc39198d5448daa92a6b3e43ae, type: 2}
   - {fileID: 11400000, guid: b89eacbc39198d5448daa92a6b3e43ae, type: 2}

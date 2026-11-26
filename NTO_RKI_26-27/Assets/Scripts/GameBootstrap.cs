@@ -1,5 +1,5 @@
 using UnityEngine;
-
+[DefaultExecutionOrder(-1000)]
 public class GameBootstrap : MonoBehaviour
 {
     public static GameBootstrap Instance { get; private set; }

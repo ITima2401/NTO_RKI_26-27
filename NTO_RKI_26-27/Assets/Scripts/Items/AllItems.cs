@@ -1,12 +1,14 @@
+using System;
 using UnityEngine;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "AllItems", menuName = "Scriptable Objects/Items/AllItems")]
 public class AllItems : ScriptableObject
 {
-    public Sprite Lvl1_BackGround;
-    public Item[] ItemsLvl1;
-    public Sprite Lvl2_BackGround;
-    public Item[] ItemsLvl2;
-    public Sprite Lvl3_BackGround;
-    public Item[] ItemsLvl3;
+    public ItemPool[] pools;
+    public void PoolsSort()
+    {
+        if (pools == null) return;
+        pools = pools.Where(p => p != null).OrderBy(p => p.MaxChance).ToArray();
+    }
 }
