@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour
     Rigidbody rb;
     private void Awake()
     {
-        PlayerStats.Player = this.gameObject;
+        GameStats.Player = this.gameObject;
         rb = GetComponent<Rigidbody>();
         target = transform.position;
     }
@@ -40,23 +40,29 @@ public class Movement : MonoBehaviour
     }
     private void OnEnable()
     {
-        PlayerStats.OnSpeedChanged += SpeedChange;
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) { Debug.LogError("GameBootstrap = null"); return; }
+        bus.Subscribe<SpeedChangedEvent>(SpeedChange);
     }
     private void OnDisable()
     {
-        PlayerStats.OnSpeedChanged -= SpeedChange;
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) return;
+        bus.Unsubscribe<SpeedChangedEvent>(SpeedChange);
     }
-    private void SpeedChange(float speed)
+    private void SpeedChange(SpeedChangedEvent speed)
     {
-        Speed = speed;
+        Speed = speed.Speed;
         Debug.Log(Speed);
 
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Loot")) 
+        if (other.gameObject.CompareTag("Loot"))
         {
-            PlayerStats.Money += 5;
+            var bus = GameBootstrap.Instance?.Bus;
+            if (bus == null) { Debug.LogError("GameBootstrap = null"); return; }
+            bus.Publish<MoneyAddEvent>(new MoneyAddEvent(5));//Доделать
             Destroy(other.gameObject);
         }
     }

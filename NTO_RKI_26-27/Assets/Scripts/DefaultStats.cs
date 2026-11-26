@@ -8,5 +8,5 @@ public class DefaultStats : ScriptableObject
     public float Speed;
     public float Damage;
 
-    public List<Item> Items = new List<Item>();
+    public Item[] Items;
 }

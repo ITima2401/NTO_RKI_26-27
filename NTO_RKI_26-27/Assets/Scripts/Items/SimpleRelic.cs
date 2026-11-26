@@ -7,7 +7,6 @@ public class SimpleRelic : Item
     public int HP_value;
     
     public int MaxHP_value;
-    public float MaxHP_mod;
     
     public float Speed_value;
     public float Speed_mod;
@@ -26,7 +25,6 @@ public class SimpleRelic : Item
 
         Append("Здоровье", HP_value);
         Append("Макс. здоровье", MaxHP_value);
-        Append("Макс. здоровье", MaxHP_mod, "%");
         Append("Скорость", Speed_value);
         Append("Скорость", Speed_mod, "%");
         Append("Урон", Damage_value);

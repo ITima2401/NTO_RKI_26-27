@@ -13,30 +13,33 @@ public class Weapon : MonoBehaviour
     public bool isAttack;
     public bool isChase = true;
 
-    private void Awake()
-    {
-        target = Target;
-        BaseChange(PlayerStats.Speed);
-    }
     private void OnEnable()
     {
-        PlayerStats.OnSpeedChanged += BaseChange;
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) { Debug.LogError("GameBootstrap = null"); return; }
+        bus.Subscribe<SpeedChangedEvent>(BaseChange);
     }
     private void OnDisable()
     {
-        PlayerStats.OnSpeedChanged -= BaseChange;
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) return;
+        bus.Unsubscribe<SpeedChangedEvent>(BaseChange);
 
     }
-    public virtual void InstData(WeaponInfo weapon)
+    public virtual void InstData(WeaponInfo weapon,Transform _target)
     {
+        Target = _target;
+        target = _target;
         Range = weapon.Range;
         Damage = weapon.Damage;
         isChase = weapon.isChase;
         Recharge = weapon.Recharge;
+        BaseSpeed = GameStats.Speed;
+        Speed = GameStats.Speed;
     }
-    private void BaseChange(float value)
+    private void BaseChange(SpeedChangedEvent value)
     {
-        BaseSpeed = value;
+        BaseSpeed = value.Speed;
         if (isAttack) Speed = BaseSpeed * 3;
         else Speed = BaseSpeed;
     }

@@ -8,11 +8,11 @@ public class TextScreen : MonoBehaviour
     private void Update()
     {
         string textString = "";
-        textString += $"Здоровье {PlayerStats.HP}     ";
-        textString += $"Макс.здоровье {PlayerStats.MaxHP}    ";
-        textString += $"Скорость {PlayerStats.Speed}     ";
-        textString += $"Урон {PlayerStats.Damage}      ";
-        textString += $"Кнопки {PlayerStats.Money}      ";
+        textString += $"Здоровье {GameStats.HP}     ";
+        textString += $"Макс.здоровье {GameStats.MaxHP}    ";
+        textString += $"Скорость {GameStats.Speed}     ";
+        textString += $"Урон {GameStats.Damage}      ";
+        textString += $"Кнопки {GameStats.Money}      ";
         text.text = textString;
     }
 }

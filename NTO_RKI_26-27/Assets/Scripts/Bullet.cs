@@ -20,9 +20,9 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(_tag) && other.isTrigger == false)
+        if (other.gameObject.CompareTag(_tag) && other.isTrigger == false && other.TryGetComponent<IDamage>(out var target))
         {
-            PlayerStats.HP -= Damage;
+            target.TakeDamage(Damage);
             Destroy(gameObject);
         }
     }

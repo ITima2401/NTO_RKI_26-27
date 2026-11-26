@@ -370,6 +370,7 @@ GameObject:
   m_Component:
   - component: {fileID: 103331678}
   - component: {fileID: 103331677}
+  - component: {fileID: 103331679}
   m_Layer: 0
   m_Name: PlayerManager
   m_TagString: Untagged
@@ -405,6 +406,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &103331679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103331676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71fa2d1c2461f8745970fb7674e0de3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameBootstrap
 --- !u!1 &108580003
 GameObject:
   m_ObjectHideFlags: 0
@@ -1888,7 +1901,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponsPos
   target: {fileID: 7279840722887255842, guid: edd7f6e5628b5fc4db7f274f4120582a, type: 3}
-  count: 1
   radius: 2
 --- !u!135 &720390055
 SphereCollider:

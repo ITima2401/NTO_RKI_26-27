@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -23,7 +24,7 @@ public class RangeWeapon : Weapon
     }
     private void OnDisable()
     {
-        StopCoroutine(Attack());
+        StopAllCoroutines();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -39,9 +40,9 @@ public class RangeWeapon : Weapon
             enemis.Remove(other.gameObject);
         }
     }
-    public override void InstData(WeaponInfo weapon)
+    public override void InstData(WeaponInfo weapon,Transform _target)
     {
-        base.InstData(weapon);
+        base.InstData(weapon,_target);
         Bullet = weapon.Bullet;
         BulletRange = weapon.BulletRange;
         BulletSpeed = weapon.BulletSpeed;
@@ -53,6 +54,9 @@ public class RangeWeapon : Weapon
             yield return new WaitForSeconds(0.2f);
             if (isRecharge && enemis.Count != 0)
             {
+                for (int i = enemis.Count - 1; i >= 0; i--)
+                    if (enemis[i] == null) enemis.RemoveAt(i);
+                if(enemis.Count == 0) continue;
                 isRecharge = false;
                 Vector3 dir = Vector3.zero;
                 float minMagnitude = math.INFINITY;
@@ -66,7 +70,7 @@ public class RangeWeapon : Weapon
                 }
 
                 GameObject _bullet = Instantiate(Bullet, transform.position + dir, Quaternion.LookRotation(dir));
-                _bullet.GetComponent<Bullet>().Damage = (int)Damage;
+                _bullet.GetComponent<Bullet>().Damage = Convert.ToInt32(Damage * GameStats.Damage);
                 _bullet.GetComponent<Bullet>().dir = dir * BulletSpeed;
                 _bullet.GetComponent<Bullet>()._tag = "Enemy";
                 Destroy(_bullet, BulletRange);

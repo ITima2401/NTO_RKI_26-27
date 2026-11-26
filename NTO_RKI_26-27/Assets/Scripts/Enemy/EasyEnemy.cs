@@ -31,7 +31,7 @@ public class EasyEnemy : Enemy
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerStats.HP -= Damage;
+            GameStats.HP -= Damage;
         }
         
     }
@@ -42,7 +42,7 @@ public class EasyEnemy : Enemy
             attackCD += Time.fixedDeltaTime;
             if (attackCD > 0.4f) 
             { 
-                PlayerStats.HP -= Damage;
+                GameStats.HP -= Damage;
                 attackCD = 0f;
             }
         }

@@ -1,6 +1,6 @@
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamage
 {
     protected Rigidbody rb;
     public Transform Player;
@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        Player = PlayerStats.Player.transform;
+        Player = GameStats.Player.transform;
     }
     public virtual void DataUpdate(EnemyData data)
     {
@@ -25,6 +25,10 @@ public class Enemy : MonoBehaviour
         Damage = data.Damage;
         StopRange = data.StopRange;
         Loot = data.LootPref;
+    }
+    public void TakeDamage(int damage)
+    {
+        ChangeHP(-damage);
     }
     public void ChangeHP(int hp)
     {

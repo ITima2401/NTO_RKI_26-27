@@ -63,9 +63,9 @@ public class MiliWeapon : Weapon
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy") && isAttack)
+        if (other.gameObject.CompareTag("Enemy") && isAttack && other.TryGetComponent<IDamage>(out var enemy))
         {
-            other.gameObject.GetComponent<Enemy>().ChangeHP(Convert.ToInt32(-Damage * PlayerStats.Damage));
+            enemy.TakeDamage(Convert.ToInt32(-Damage * GameStats.Damage));
             isAttack = false;
             target = Target;
             Speed = BaseSpeed;
@@ -79,9 +79,9 @@ public class MiliWeapon : Weapon
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy") && isAttack)
+        if (other.gameObject.CompareTag("Enemy") && isAttack && other.TryGetComponent<IDamage>(out var enemy))
         {
-            other.gameObject.GetComponent<Enemy>().ChangeHP(Convert.ToInt32(-Damage * PlayerStats.Damage));
+            enemy.TakeDamage(Convert.ToInt32(Damage * GameStats.Damage));
             isAttack = false;
             target = Target;
             Speed = BaseSpeed;

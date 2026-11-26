@@ -1,27 +1,32 @@
 using UnityEngine;
 
-public class PlayerHP : MonoBehaviour
+public class PlayerHP : MonoBehaviour, IDamage
 {
     public int HP;
     public int MaxHP;
     private void OnEnable()
     {
-        PlayerStats.OnHPChanged += HPChange;
-        PlayerStats.OnMaxHPChanged += MaxHPChange;
+
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) { Debug.LogError("GameBootstrap = null"); return; }
+        bus.Subscribe<HPChangedEvent>(HPChange);
     }
     private void OnDisable()
     {
-        PlayerStats.OnHPChanged -= HPChange;
-        PlayerStats.OnMaxHPChanged -= MaxHPChange;
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) return;
+        bus.Unsubscribe<HPChangedEvent>(HPChange);
     }
-    private void HPChange(int hp)
+    public void TakeDamage(int damage)
     {
-        HP = hp;
-        if (HP <= 0) Death();
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) { Debug.LogError("GameBootstrap = null"); return; }
+        bus.Publish<HPAddEvent>(new HPAddEvent(-damage,0));
     }
-    private void MaxHPChange(int hp)
+    private void HPChange(HPChangedEvent changedEvent)
     {
-        MaxHP = hp;
+        HP = changedEvent.HP;
+        MaxHP = changedEvent.MaxHP;
         if (HP <= 0) Death();
     }
     private void Death()
