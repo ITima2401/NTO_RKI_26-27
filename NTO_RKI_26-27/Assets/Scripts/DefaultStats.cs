@@ -8,6 +8,7 @@ public class DefaultStats : ScriptableObject
     public int Luck;
     public int MiliDamage;
     public int RangeDamage;
+    public int MaxWeaponCount;
     public float Damage;
     public float Regen;
     public float Speed;

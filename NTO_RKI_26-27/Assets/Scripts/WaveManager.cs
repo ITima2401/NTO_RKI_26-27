@@ -14,6 +14,7 @@ public class WaveManager : MonoBehaviour
 
         WaveData wave = waveDatas[WaveNumber % waveDatas.Length];
         WaveNumber++;
+        if (wave == null){ Debug.LogError("Пустая волна");WaveStarting(); return;} 
         bus.Publish(new WaveStartedEvent(wave, WaveNumber));
 
         

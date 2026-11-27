@@ -34,7 +34,7 @@ public sealed class EventBus : IEventBus
         for (int i = 0; i < sub.Length; i++)
         {
             try { ((Action<T>)sub[i]).Invoke(evt); }
-            catch { }
+            catch { Debug.LogWarning($"{sub[i]} not Invoke({evt})"); }
         }
     }
 

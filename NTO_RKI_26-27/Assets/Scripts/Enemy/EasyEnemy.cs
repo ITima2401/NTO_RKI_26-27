@@ -4,6 +4,7 @@ public class EasyEnemy : Enemy
     private float slow;
     void Update()
     {
+        if(Player == null) return;
         float Magnitude = (Player.position - transform.position).magnitude;
         if ( Magnitude > SlowRange)
         {
@@ -12,6 +13,7 @@ public class EasyEnemy : Enemy
         }
         else if(Magnitude > StopRange)
         {
+            if(SlowRange == 0) return;
             slow = Mathf.Max(Magnitude  / SlowRange,0.6f);
             Vector3 dir = (Player.position - transform.position).normalized;
             rb.linearVelocity = dir * Speed * slow;
@@ -23,6 +25,7 @@ public class EasyEnemy : Enemy
     }
     public override void DataUpdate(EnemyData data)
     {
+        if (data == null) return;
         base.DataUpdate(data);
         SlowRange = data.SlowRange;
     }

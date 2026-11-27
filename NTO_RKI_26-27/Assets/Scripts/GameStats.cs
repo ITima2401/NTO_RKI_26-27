@@ -18,6 +18,7 @@ public static class GameStats
     public static int MaxHP;
     public static int Money;
     public static int WaveNum;
+    public static int MaxWeaponCount;
     public static float Regen;
     public static float Speed;
     public static int MiliDamage;

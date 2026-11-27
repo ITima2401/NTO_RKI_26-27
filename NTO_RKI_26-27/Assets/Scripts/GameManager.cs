@@ -7,10 +7,25 @@ public class GameManager : MonoBehaviour
     [SerializeField] DefaultStats defaultStats;
     private void Start()
     {
+        if (defaultStats == null) { Debug.LogError("defaultStats = null"); return; }
         if(defaultStats.HP <= 0 || defaultStats.MiliDamage <= 0 ||
-            defaultStats.Speed <= 0 || defaultStats.RangeDamage <= 0)
+            defaultStats.Speed <= 0 || defaultStats.RangeDamage <= 0
+            ||defaultStats.MaxWeaponCount <= 0||defaultStats.Damage <= 0)
         { Debug.LogWarning("Uncorrect defaultStats"); return; }
 
+
+        GameStats.Luck = 0;
+        GameStats.HP = 0;
+        GameStats.MaxHP = 0;
+        GameStats.Money = 0;    
+        GameStats.WaveNum = 0;
+        GameStats.MaxWeaponCount = 0;
+        GameStats.Regen = 0;
+        GameStats.Speed = 0;
+        GameStats.MiliDamage = 0;
+        GameStats.RangeDamage = 0;
+        GameStats.Damage = 0;
+        ChangeMaxWeaponCount(new MaxWeaponCountAddEvent(defaultStats.MaxWeaponCount));
         ChangeLuck(new LuckAddEvent(defaultStats.Luck));
         ChangeHP(new HPAddEvent(defaultStats.HP, defaultStats.HP));
         ChangeDamage(new DamageAddEvent(defaultStats.Damage));
@@ -18,10 +33,10 @@ public class GameManager : MonoBehaviour
         ChangeRangeDamage(new RangeDamageAddEvent(defaultStats.RangeDamage));
         ChangeRegen(new RegenAddEvent(defaultStats.Regen));
         ChangeSpeed(new SpeedAddEvent(defaultStats.Speed));
-
+        GameStats.Weapons.Clear();
         GameStats.Items.Clear();
-        if(defaultStats.Items != null && defaultStats.Items.Length != 0)
-            foreach (Item item in defaultStats.Items) StatsUpdate(item);
+        if (defaultStats.Items != null && defaultStats.Items.Length != 0)
+            foreach (Item item in defaultStats.Items) ChangeItems(new ItemAddEvent(item));
     }
     private void OnEnable()
     {
@@ -36,8 +51,10 @@ public class GameManager : MonoBehaviour
         bus.Subscribe<RegenAddEvent>(ChangeRegen);
         bus.Subscribe<MoneyAddEvent>(ChangeMoney);
         bus.Subscribe<LuckAddEvent>(ChangeLuck);
+        bus.Subscribe<MaxWeaponCountAddEvent>(ChangeMaxWeaponCount);
         bus.Subscribe<ItemAddEvent>(ChangeItems);
         bus.Subscribe<PlayerObjUpdate>(ChangePlayerObj);
+        bus.Subscribe<WeaponSubtractEvent>(SubstructWeapon);
 
     }
     private void OnDisable()
@@ -53,19 +70,26 @@ public class GameManager : MonoBehaviour
         bus.Unsubscribe<RegenAddEvent>(ChangeRegen);
         bus.Unsubscribe<MoneyAddEvent>(ChangeMoney);
         bus.Unsubscribe<LuckAddEvent>(ChangeLuck);
+        bus.Unsubscribe<MaxWeaponCountAddEvent>(ChangeMaxWeaponCount);
         bus.Unsubscribe<ItemAddEvent>(ChangeItems);
         bus.Unsubscribe<PlayerObjUpdate>(ChangePlayerObj);
+        bus.Unsubscribe<WeaponSubtractEvent>(SubstructWeapon);
+
 
     }
     public void StatsUpdate(Item item)
     {
-
-        if(item is WeaponInfo weapon) GameStats.Weapons.Add(weapon);
+        if (item is WeaponInfo weapon)
+        {
+            if( GameStats.MaxWeaponCount > GameStats.Weapons.Count) GameStats.Weapons.Add(weapon);
+            else GameStats.Items.Remove(weapon);
+        }
         else if (item is SimpleRelic relic)
         {
 
-            if (relic.HP != 0 || relic.MaxHP != 0) 
+            if (relic.HP != 0 || relic.MaxHP != 0)
                 ChangeHP(new HPAddEvent(relic.HP, relic.MaxHP));
+            if (relic.MaxWeaponCount != 0) ChangeMaxWeaponCount(new MaxWeaponCountAddEvent(relic.MaxWeaponCount));
             if (relic.Luck != 0) ChangeLuck(new LuckAddEvent(relic.Luck));
             if (relic.MiliDamage != 0) ChangeMiliDamage(new MiliDamageAddEvent(relic.MiliDamage));
             if (relic.RangeDamage != 0) ChangeRangeDamage(new RangeDamageAddEvent(relic.RangeDamage));
@@ -101,8 +125,8 @@ public class GameManager : MonoBehaviour
         var bus = GameBootstrap.Instance?.Bus;
         if (bus == null) { Debug.LogError(" GameBootstrap = null"); return; }
 
-        GameStats.MaxHP += _hp.MaxHP;
-        GameStats.HP = Math.Min(GameStats.HP+_hp.HP, GameStats.MaxHP);
+        GameStats.MaxHP =Math.Max( _hp.MaxHP + GameStats.MaxHP, 0);
+        GameStats.HP = Math.Max(Math.Min(GameStats.HP + _hp.HP, GameStats.MaxHP),0);
 
         bus.Publish(new HPChangedEvent(GameStats.HP, GameStats.MaxHP));
     }
@@ -120,7 +144,7 @@ public class GameManager : MonoBehaviour
         var bus = GameBootstrap.Instance?.Bus;
         if (bus == null) { Debug.LogError(" GameBootstrap = null"); return; }
 
-        GameStats.Speed += speed.Speed;
+        GameStats.Speed = Mathf.Max(speed.Speed + GameStats.Speed,0.1f);
 
         bus.Publish(new SpeedChangedEvent(GameStats.Speed));
     }
@@ -154,6 +178,14 @@ public class GameManager : MonoBehaviour
         GameStats.Luck += luck.Luck;
         bus.Publish(new LuckChangedEvent(GameStats.Luck));
     }
+    private void ChangeMaxWeaponCount(MaxWeaponCountAddEvent maxWeaponCount)
+    {
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) { Debug.LogError(" GameBootstrap = null"); return; }
+
+        GameStats.MaxWeaponCount = Math.Max(maxWeaponCount.MaxWeaponCount + GameStats.MaxWeaponCount,0);
+        bus.Publish(new MaxWeaponCountChangeEvent(GameStats.MaxWeaponCount));
+    }
     private void ChangePlayerObj(PlayerObjUpdate player)
     { 
         if (player.Player == null) { Debug.LogWarning("Player = null");return;}
@@ -168,6 +200,16 @@ public class GameManager : MonoBehaviour
 
         GameStats.Items.Add(item.Item);
         StatsUpdate(item.Item);
+
+        bus.Publish(new ItemsChangedEvent(GameStats.Items.ToArray<Item>()));
+    }
+    private void SubstructWeapon(WeaponSubtractEvent weapon)
+    {
+        var bus = GameBootstrap.Instance?.Bus;
+        if (bus == null) { Debug.LogError(" GameBootstrap = null"); return; }
+
+        GameStats.Weapons.Remove(weapon.Weapon);
+        GameStats.Items.Remove(weapon.Weapon);
 
         bus.Publish(new ItemsChangedEvent(GameStats.Items.ToArray<Item>()));
     }

@@ -27,6 +27,7 @@ public class Weapon : MonoBehaviour
     }
     public virtual void InstData(WeaponInfo weapon,Transform _target)
     {
+        if(weapon == null||_target == null) return;
         Target = _target;
         target = _target;
         Range = weapon.Range;
@@ -44,7 +45,7 @@ public class Weapon : MonoBehaviour
     }
     protected virtual void Update()
     {
-        if (isChase)
+        if (isChase && target != null)
         {
             Vector3 dir = (target.position - transform.position).normalized;
             transform.Translate(dir * Speed * Time.deltaTime);

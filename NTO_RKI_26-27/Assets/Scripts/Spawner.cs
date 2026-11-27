@@ -36,6 +36,7 @@ public class Spawner : MonoBehaviour
         var bus = GameBootstrap.Instance?.Bus;
         if (bus == null) return;
         bus.Unsubscribe<WaveStartedEvent>(OnWaveStarted);
+        StopAllCoroutines();
     }
 
     private void Update()
@@ -60,14 +61,17 @@ public class Spawner : MonoBehaviour
     private IEnumerator Spawn()
     {
         Vector3 point = new Vector3(Random.Range(minX, maxX),Random.Range(0f, 0.2f),Random.Range(minZ, maxZ));
-
-        GameObject krest = Instantiate(Krest, point, Quaternion.identity);
-        yield return new WaitForSeconds(0.5f);
-        Destroy(krest);
+        if(Krest != null)
+        {
+            GameObject krest = Instantiate(Krest, point, Quaternion.identity);
+            yield return new WaitForSeconds(0.5f);
+            Destroy(krest);
+        }
 
         if (Enemy == null || Enemy.Length == 0) yield break;
 
         EnemyData data = Enemy[Random.Range(0, Enemy.Length)];
+        if (data == null || data.EnemyPref == null) yield break;
         Enemy enemy = Instantiate(data.EnemyPref, point, Quaternion.identity).GetComponent<Enemy>();
         enemy.DataUpdate(data);
         Destroy(enemy.gameObject, WaveTime);
@@ -77,13 +81,13 @@ public class Spawner : MonoBehaviour
     {
         if (evt.Wave == null) { Debug.LogWarning("Wave == null"); return; }
         if (evt.Wave.SpawnCount <= 0) { Debug.LogWarning("SpawnCount <= 0"); return; }
+        if (evt.Wave.WaveTime <= 4) { Debug.LogWarning("WaveTime <= 4"); return; }
         if (evt.Wave.Enemy == null || evt.Wave.Enemy.Length == 0) { Debug.LogWarning("Enemy == null"); return; }
 
         WaveTime = evt.Wave.WaveTime;
         SpawnCount = evt.Wave.SpawnCount;
         Enemy = evt.Wave.Enemy;
         currentWaveNumber = evt.Number;
-
         isWaveActive = true;
         spawnPause = 0f;
         spawnRate = (WaveTime - 4f) / SpawnCount;

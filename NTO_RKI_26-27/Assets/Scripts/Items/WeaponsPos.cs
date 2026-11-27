@@ -28,12 +28,13 @@ public class WeaponsPos : MonoBehaviour
 
     private void BuildWeapons()
     {
+        if (GameStats.Weapons == null|| GameStats.Weapons.Count == 0||target == null) return;
         int count = GameStats.Weapons.Count;
-        if (count == 0) return;
 
         float step = 2f * Mathf.PI / count;
         for (int i = 0; i < count; i++)
         {
+            if(GameStats.Weapons[i] == null || GameStats.Weapons[i].WeaponPrefab == null) continue;
             float angle = i * step;
             Vector3 pos = new Vector3(Mathf.Cos(angle) * radius, 1f, Mathf.Sin(angle) * radius);
 

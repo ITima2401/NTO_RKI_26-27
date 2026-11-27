@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SimpleRelic
   Cost: 5
   sprite: {fileID: 21300000, guid: d5ecb694bb6479c44ae6cb9ff600c1ba, type: 3}
-  HP_value: 3
-  MaxHP_value: 3
-  MaxHP_mod: 0
-  Speed_value: 0
-  Speed_mod: 0
-  Damage_value: 0
-  Damage_mod: 0
+  HP: 0
+  MaxHP: 0
+  Luck: 0
+  MiliDamage: 5
+  RangeDamage: 5
+  Damage_mod: 5
+  Regen: 5
+  Speed: 5

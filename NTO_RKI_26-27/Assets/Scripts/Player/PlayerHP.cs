@@ -7,7 +7,8 @@ public class PlayerHP : MonoBehaviour, IDamage
     public int MaxHP;
     private void OnEnable()
     {
-
+        MaxHP = GameStats.MaxHP;
+        HP = GameStats.HP;
         var bus = GameBootstrap.Instance?.Bus;
         if (bus == null) { Debug.LogError("GameBootstrap = null"); return; }
         bus.Subscribe<HPChangedEvent>(HPChange);
@@ -48,7 +49,7 @@ public class PlayerHP : MonoBehaviour, IDamage
         while (true)
         {
             if(GameStats.Regen <= 0) break;
-            yield return new WaitForSeconds(1 / GameStats.Regen);
+            yield return new WaitForSeconds(5 / GameStats.Regen);
             bus.Publish<HPAddEvent>(new HPAddEvent(1,0));
         }
     }

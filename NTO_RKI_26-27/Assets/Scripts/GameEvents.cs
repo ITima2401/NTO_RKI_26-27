@@ -27,11 +27,11 @@ public readonly struct HPChangedEvent
     public readonly int MaxHP;
     public HPChangedEvent(int hp, int maxHp) { HP = hp; MaxHP = maxHp; }
 }
-// Событие: изменились оружия игрока.
-public readonly struct WeaponChangedEvent
+// Событие: удаленно оружие игрока.
+public readonly struct WeaponSubtractEvent
 {
-    public readonly Weapon[] Weapon;
-    public WeaponChangedEvent(Weapon[] weapon) { Weapon = weapon; }
+    public readonly WeaponInfo Weapon;
+    public WeaponSubtractEvent(WeaponInfo weapon) { Weapon = weapon; }
 }
 // Событие: изменились предметы игрока.
 public readonly struct ItemsChangedEvent
@@ -76,7 +76,12 @@ public readonly struct LuckChangedEvent
     public readonly int Luck;
     public LuckChangedEvent(int luck) { Luck = luck; }
 }
-
+// Событие: изменилось макс. кол-во  оружий.
+public readonly struct MaxWeaponCountChangeEvent
+{
+    public readonly int MaxWeaponCount;
+    public MaxWeaponCountChangeEvent(int maxWeaponCount) { MaxWeaponCount = maxWeaponCount; }
+}
 // Событие: изменился урон игрока. 
 public readonly struct DamageChangedEvent
 {
@@ -108,8 +113,6 @@ public readonly struct RangeDamageAddEvent
     public readonly int RangeDamage;
     public RangeDamageAddEvent(int damage) { RangeDamage = damage; }
 }
-
-
 // Событие: добавилась скорость игроку.
 public readonly struct SpeedAddEvent
 {
@@ -140,4 +143,10 @@ public readonly struct LuckAddEvent
 {
     public readonly int Luck;
     public LuckAddEvent(int luck) { Luck = luck; }
+}
+// Событие: добавилось макс. кол-во  оружий.
+public readonly struct MaxWeaponCountAddEvent
+{
+    public readonly int MaxWeaponCount;
+    public MaxWeaponCountAddEvent(int maxWeaponCount) { MaxWeaponCount = maxWeaponCount; }
 }

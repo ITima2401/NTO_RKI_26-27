@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-
+[RequireComponent(typeof(SphereCollider))]
 public class RangeWeapon : Weapon
 {
     private List<GameObject> enemis = new List<GameObject>();
@@ -69,10 +69,10 @@ public class RangeWeapon : Weapon
                         minMagnitude = (enemis[i].transform.position - transform.position).magnitude;
                     }
                 }
-
+                if (Bullet == null) yield break;
                 GameObject _bullet = Instantiate(Bullet, transform.position + dir, Quaternion.LookRotation(dir));
                 _bullet.GetComponent<Bullet>().Damage = 
-                    Convert.ToInt32(GameStats.RangeDamage * Damage * GameStats.Damage);
+                    Convert.ToInt32(GameStats.RangeDamage * Damage * GameStats.Damage / 100);
                 _bullet.GetComponent<Bullet>().dir = dir * BulletSpeed;
                 _bullet.GetComponent<Bullet>()._tag = "Enemy";
                 Destroy(_bullet, BulletRange);

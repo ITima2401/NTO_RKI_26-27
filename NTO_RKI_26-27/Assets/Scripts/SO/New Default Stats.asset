@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: New Default Stats
   m_EditorClassIdentifier: Assembly-CSharp::DefaultStats
   HP: 5
-  Speed: 7
-  Damage: 1
+  Luck: 0
   MiliDamage: 1
   RangeDamage: 2
+  MaxWeaponCount: 6
+  Damage: 1
   Regen: 1
+  Speed: 7
   Items:
   - {fileID: 11400000, guid: b89eacbc39198d5448daa92a6b3e43ae, type: 2}
   - {fileID: 11400000, guid: b89eacbc39198d5448daa92a6b3e43ae, type: 2}

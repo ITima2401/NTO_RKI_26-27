@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerHP))]
 [RequireComponent(typeof(WeaponsPos))]
+[RequireComponent(typeof(Rigidbody))]
 public class Movement : MonoBehaviour
 {
     public float Speed;

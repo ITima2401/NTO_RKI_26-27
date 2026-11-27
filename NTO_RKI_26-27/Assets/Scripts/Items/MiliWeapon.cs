@@ -16,7 +16,6 @@ public class MiliWeapon : Weapon
         SphereCollider = GetComponent<SphereCollider>();
         baseRange = SphereCollider.radius;
         SphereCollider.radius = Range;
-        SphereCollider.isTrigger = true;
     }
     protected override void Update()
     {
@@ -68,7 +67,7 @@ public class MiliWeapon : Weapon
             enemis.Add(other.gameObject);
             if (isAttack && other.TryGetComponent<IDamage>(out var enemy))
             {
-                enemy.TakeDamage(Convert.ToInt32(GameStats.MiliDamage * Damage * GameStats.Damage));
+                enemy.TakeDamage(Convert.ToInt32(GameStats.MiliDamage * Damage * GameStats.Damage / 100));
                 isAttack = false;
                 target = Target;
                 Speed = BaseSpeed;
@@ -82,7 +81,7 @@ public class MiliWeapon : Weapon
     {
         if (other.gameObject.CompareTag("Enemy") && isAttack && other.TryGetComponent<IDamage>(out var enemy))
         {
-            enemy.TakeDamage(Convert.ToInt32(GameStats.MiliDamage * Damage * GameStats.Damage));
+            enemy.TakeDamage(Convert.ToInt32(GameStats.MiliDamage * Damage * GameStats.Damage / 100));
             isAttack = false;
             target = Target;
             Speed = BaseSpeed;

@@ -9,6 +9,7 @@ public class RangeEnemy : Enemy
     public bool isRecharge = true;
     void Update()
     {
+        if (Player == null) return;
         Vector3 dir = (Player.position - transform.position).normalized;
         float Magnitude = (Player.position - transform.position).magnitude;
 
@@ -28,6 +29,7 @@ public class RangeEnemy : Enemy
     }
     public override void DataUpdate(EnemyData data)
     {
+        if (data == null) return;
         base.DataUpdate(data);
         attackCD = data.AttackCD;
         AttackRange = data.AttackRange;
@@ -38,6 +40,7 @@ public class RangeEnemy : Enemy
     IEnumerator Attack(Vector3 dir)
     {
         isRecharge = false;
+        if (bullet == null) yield break;
         GameObject _bullet = Instantiate(bullet, transform.position + dir , Quaternion.LookRotation(dir));
         _bullet.GetComponent<Bullet>().Damage = Damage;
         _bullet.GetComponent<Bullet>().dir = dir * BulletSpeed;

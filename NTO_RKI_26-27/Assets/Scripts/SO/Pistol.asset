@@ -18,6 +18,7 @@ MonoBehaviour:
   Damage: 1.5
   Recharge: 2
   isChase: 1
+  isRange: 1
   Range: 10
   Bullet: {fileID: 2902682164308045485, guid: ae89fb1a07770494a9aaf0a4346398b7, type: 3}
   BulletRange: 4

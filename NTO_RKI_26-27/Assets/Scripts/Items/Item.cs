@@ -8,4 +8,8 @@ public class Item : ScriptableObject
     {
         return "";
     }
+    public virtual bool isLegal()
+    {
+        return GameStats.Money >= Cost;
+    }
 }

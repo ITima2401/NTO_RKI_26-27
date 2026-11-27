@@ -15,10 +15,11 @@ public class Enemy : MonoBehaviour, IDamage
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        Player = GameStats.Player.transform;
+        if(GameStats.Player != null) Player = GameStats.Player.transform;
     }
     public virtual void DataUpdate(EnemyData data)
     {
+        if(data == null) return;
         HP = data.HP;
         MaxHP = data.HP;
         Speed = data.Speed;
@@ -39,7 +40,7 @@ public class Enemy : MonoBehaviour, IDamage
     }
     private void Death()
     {
-        Instantiate( Loot,transform.position,Quaternion.identity );
+        if(Loot != null) Instantiate( Loot,transform.position,Quaternion.identity );
         Destroy( this.gameObject );
     }
 }
