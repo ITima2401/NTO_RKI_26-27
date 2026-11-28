@@ -5,6 +5,7 @@ public class PlayerHP : MonoBehaviour, IDamage
 {
     public int HP;
     public int MaxHP;
+    [SerializeField] GameObject deadPanel;
     private void OnEnable()
     {
         MaxHP = GameStats.MaxHP;
@@ -39,6 +40,7 @@ public class PlayerHP : MonoBehaviour, IDamage
     }
     private void Death()
     {
+        deadPanel.SetActive(true);
         Debug.Log("Смерть");
     }
     IEnumerator Regen()

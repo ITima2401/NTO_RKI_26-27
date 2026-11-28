@@ -17,6 +17,7 @@ public class ShowRelic : MonoBehaviour
         var bus = GameBootstrap.Instance?.Bus;
         if(bus == null ) { Debug.LogError("GameBootstrap = 0"); return; }
         bus.Subscribe<ItemsChangedEvent>(RefreshItem);
+        RefreshItem(new ItemsChangedEvent(GameStats.Items.ToArray()));
     }
     private void OnDisable()
     {

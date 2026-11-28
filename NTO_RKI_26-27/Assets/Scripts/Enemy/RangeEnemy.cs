@@ -19,6 +19,7 @@ public class RangeEnemy : Enemy
         }
         else if(Magnitude - StopRange < 0f)
         {
+            if (isRecharge) StartCoroutine(Attack(dir));
             rb.linearVelocity = -dir * Speed;
         }
         else

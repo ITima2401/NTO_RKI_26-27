@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerHP))]
@@ -5,6 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class Movement : MonoBehaviour
 {
+    private int wave;
     public float Speed;
     Vector3 target;
     Rigidbody rb;
@@ -44,26 +46,25 @@ public class Movement : MonoBehaviour
         var bus = GameBootstrap.Instance?.Bus;
         if (bus == null) { Debug.LogError("GameBootstrap = null"); return; }
         bus.Subscribe<SpeedChangedEvent>(SpeedChange);
+        bus.Subscribe<WaveStartedEvent>(WaveChange);
+
     }
     private void OnDisable()
     {
         var bus = GameBootstrap.Instance?.Bus;
         if (bus == null) return;
+        bus.Unsubscribe<WaveStartedEvent>(WaveChange);
         bus.Unsubscribe<SpeedChangedEvent>(SpeedChange);
     }
-    private void SpeedChange(SpeedChangedEvent speed)
-    {
-        Speed = speed.Speed;
-        Debug.Log(Speed);
-
-    }
+    private void SpeedChange(SpeedChangedEvent speed) => Speed = speed.Speed;
+    private void WaveChange(WaveStartedEvent waveStartedEvent) => wave = waveStartedEvent.Number;
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Loot"))
         {
             var bus = GameBootstrap.Instance?.Bus;
             if (bus == null) { Debug.LogError("GameBootstrap = null"); return; }
-            bus.Publish<MoneyAddEvent>(new MoneyAddEvent(5));//Доделать
+            bus.Publish<MoneyAddEvent>(new MoneyAddEvent(Convert.ToInt32(2 * wave)));
             Destroy(other.gameObject);
         }
     }

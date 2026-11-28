@@ -17,7 +17,7 @@ MonoBehaviour:
   MiliDamage: 1
   RangeDamage: 2
   MaxWeaponCount: 6
-  Damage: 1
+  Damage: 100
   Regen: 1
   Speed: 7
   Items:
